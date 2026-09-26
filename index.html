@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sitio Web - Navbar & Footer</title>
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR FLOTANTE CENTRADO -->
+    <header class="navbar-header">
+        <nav class="navbar">
+            <a href="#" class="brand-logo">MiSitio</a>
+
+            <!-- Botón Hamburguesa Móvil -->
+            <button class="hamburger" id="hamburger-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+
+            <!-- Menú de Navegación -->
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item"><a href="#inicio" class="nav-link active">Inicio</a></li>
+                <li class="nav-item"><a href="#servicios" class="nav-link">Servicios</a></li>
+                <li class="nav-item dropdown">
+                    <a href="#proyectos" class="nav-link dropdown-toggle" id="dropdown-toggle" aria-expanded="false" aria-controls="dropdown-menu">
+                        Proyectos <span class="arrow">▼</span>
+                    </a>
+                    <ul class="dropdown-menu" id="dropdown-menu">
+                        <li><a href="#proyectos" class="dropdown-link">Web App</a></li>
+                        <li><a href="#proyectos" class="dropdown-link">Móvil</a></li>
+                        <li><a href="#proyectos" class="dropdown-link">Escritorio</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item"><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="page-shell">
+        <section class="hero" id="inicio">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <span class="eyebrow">Tu marca - Tu presencia digital</span>
+                    <h1>Diseñamos experiencias que conectan con tu público.</h1>
+                    <p>
+                        Este es el espacio principal para presentar tu propuesta de valor, servicio o empresa.
+                        Aquí puedes poner un texto grande, una imagen, CTA y lo que necesites.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#contacto" class="btn btn-primary">Contáctanos</a>
+                        <a href="#servicios" class="btn btn-secondary">Ver servicios</a>
+                    </div>
+
+                    <ul class="hero-stats">
+                        <li><strong>+150</strong><span>Proyectos</span></li>
+                        <li><strong>4.9/5</strong><span>Calificación</span></li>
+                        <li><strong>24/7</strong><span>Soporte</span></li>
+                    </ul>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="mockup-card">
+                        <span class="status-dot"></span>
+                        <h3>Espacio para imagen, mockup o banner</h3>
+                        <div class="mockup-box">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="servicios">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Servicios</span>
+                    <h2>Lo que puedes ofrecer</h2>
+                </div>
+
+                <div class="cards-grid">
+                    <article class="card">
+                        <div class="icon-box">01</div>
+                        <h3>Servicio 1</h3>
+                        <p>Descripción breve del servicio que ofreces.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="icon-box">02</div>
+                        <h3>Servicio 2</h3>
+                        <p>Describe tu segunda oferta o solución.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="icon-box">03</div>
+                        <h3>Servicio 3</h3>
+                        <p>Puedes reemplazar este bloque por paquetes, productos o beneficios.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section alt-section" id="nosotros">
+            <div class="container about-grid">
+                <div class="about-image">
+                    <div class="image-placeholder">Imagen o foto</div>
+                </div>
+
+                <div class="about-content">
+                    <span class="eyebrow">Nosotros</span>
+                    <h2>Una empresa enfocada en soluciones claras y efectivas.</h2>
+                    <p>
+                        Aquí va la historia de tu empresa, misión, visión y valores. Es un bloque ideal para explicar
+                        quién eres y por qué escogerte.
+                    </p>
+                    <ul class="check-list">
+                        <li>Experiencia y compromiso</li>
+                        <li>Atención personalizada</li>
+                        <li>Soluciones adaptadas a tus necesidades</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="proyectos">
+            <div class="container">
+                <div class="section-header">
+                    <span class="eyebrow">Proyectos</span>
+                    <h2>Trabajos o casos de éxito</h2>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-item">
+                        <div class="project-thumb">Proyecto 1</div>
+                        <h3>Nombre del proyecto</h3>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-thumb">Proyecto 2</div>
+                        <h3>Nombre del proyecto</h3>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-thumb">Proyecto 3</div>
+                        <h3>Nombre del proyecto</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact-section" id="contacto">
+            <div class="container contact-grid">
+                <div class="contact-info">
+                    <span class="eyebrow">Contacto</span>
+                    <h2>Hablemos de tu proyecto.</h2>
+                    <p>Escribe aquí información de contacto, horarios, ubicación o redes sociales.</p>
+
+                    <ul class="contact-list">
+                        <li>Email: contacto@tudominio.com</li>
+                        <li>Teléfono: +52 000 000 0000</li>
+                        <li>Ciudad / País</li>
+                    </ul>
+                </div>
+
+                <form class="contact-form">
+                    <label>
+                        Nombre
+                        <input type="text" placeholder="Tu nombre" />
+                    </label>
+
+                    <label>
+                        Email
+                        <input type="email" placeholder="Tu correo" />
+                    </label>
+
+                    <label>
+                        Asunto
+                        <input type="text" placeholder="Asunto" />
+                    </label>
+
+                    <label>
+                        Mensaje
+                        <textarea rows="5" placeholder="Escribe tu mensaje..."></textarea>
+                    </label>
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>MiSitio</h3>
+                <p>Desarrollo de soluciones de software eficientes, escalables y modernas.</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#proyectos">Portafolio</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Redes Sociales</h4>
+                <ul>
+                    <li><a href="#">GitHub</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                    <li><a href="#">X / Twitter</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 MiSitio. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="./js/main-desing.js" defer></script>
+</body>
+
+</html>
