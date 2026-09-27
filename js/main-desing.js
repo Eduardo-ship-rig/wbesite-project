@@ -69,3 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setMenuOpen(false);
     });
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const monthElement = document.getElementById("calendar-month");
+    const dateElement = document.getElementById("calendar-date");
+
+    const now = new Date();
+
+    // Obtener el nombre del mes abreviado o completo (ej: "JUN" o "JUNE")
+    const monthName = now.toLocaleString("en-US", { month: "long" }).toUpperCase();
+
+    // Obtener el número del día
+    const dayNumber = now.getDate();
+
+    // Insertar en el HTML
+    monthElement.textContent = monthName;
+    dateElement.textContent = dayNumber;
+});
