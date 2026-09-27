@@ -6,13 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sitio Web - Navbar & Footer</title>
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/style-fondo.css">
+
+
+
+
     <script type="module" src="./js/app.js"></script>
     <script src="./js/main-desing.js" defer></script>
+    <script src="./js/animation-back.js" defer></script>
 
 </head>
 
 <body>
-
+    <div class="fs-fondo" id="fondo-salud" aria-hidden="true">
+        <canvas></canvas>
+    </div>
     <!-- NAVBAR FLOTANTE CENTRADO -->
     <header class="navbar-header">
         <nav class="navbar">
@@ -81,8 +89,8 @@
                                 <span class="see-more">See More</span>
                             </div>
                             <div class="date-box">
-                                <span id="calendar-month" class="month">JUNE</span>
-                                <span id="calendar-date" class="date">29</span>
+                                <span id="calendar-month" class="month"></span>
+                                <span id="calendar-date" class="date"></span>
                             </div>
                         </div>
                     </div>

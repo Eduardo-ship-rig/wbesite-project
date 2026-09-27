@@ -341,9 +341,11 @@ img {
 }
 
 .date-box .month {
+    text-align: center;
+    align-items: center;
     color: rgb(4, 193, 250);
     font-size: 9px;
-    font-weight: 700;
+    font-weight: 1900;
 }
 
 .date-box .date {

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sombra animada orgánica</title>
+
+<style>
+  html, body { margin: 0; height: 100%; background: #ffffff; }
+
+  .fs-fondo{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background: #ffffff;
+  }
+  .fs-fondo canvas{ display: block; width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+
+<div class="fs-fondo" id="fondo-salud" aria-hidden="true">
+  <canvas></canvas>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const cont   = document.getElementById('fondo-salud');
+  const canvas = cont.querySelector('canvas');
+  const ctx    = canvas.getContext('2d');
+
+  const CFG = {
+    azulCursor : [46, 134, 168],
+    verdeCursor: [58, 178, 132],
+    fadeEstela : 0.06,
+    suavAzul   : 7.0,
+    suavVerde  : 2.2,
+    // Cuántos "lóbulos" irregulares tiene la sombra
+    lobulos    : 9,
+    // Cuánto se deforma respecto al radio base (0.28 = 28%)
+    deformacion: 0.32,
+    // Velocidad de la ondulación orgánica
+    velOndas   : 0.55
+  };
+
+  const reduceMov = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const comp = reduceMov ? 1.8 : 1;
+  const FADE = reduceMov ? 0.14 : CFG.fadeEstela;
+
+  let w = 0, h = 0, baseR = 240, frame = 0;
+
+  const puntero = { x: innerWidth / 2, y: innerHeight / 2 };
+  const azul    = { x: puntero.x, y: puntero.y };
+  const verde   = { x: puntero.x, y: puntero.y };
+  const vel     = { x: 0, y: 0 };
+  let presion = 1, presionObj = 1;
+  let tPrev = performance.now();
+
+  // Fases aleatorias por lóbulo (fijas, dan forma irregular estable)
+  const fases = Array.from({ length: CFG.lobulos }, () => Math.random() * Math.PI * 2);
+  const amps  = Array.from({ length: CFG.lobulos }, () => 0.6 + Math.random() * 0.8);
+
+  const expo = (cur, obj, lambda, dt) =>
+    cur + (obj - cur) * (1 - Math.exp(-lambda * dt));
+
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+
+  /**
+   * Dibuja una sombra orgánica:
+   * - Radio variable por ángulo → forma irregular tipo "mancha"
+   * - Se estira en la dirección del movimiento (elongación)
+   * - Se ensancha perpendicular al movimiento (compresión lateral)
+   * - Pulsación orgánica continua
+   */
+  function sombraOrganica(x, y, r, color, alpha, tf, elong, angle, seed){
+    const pasos = 48;
+    const dx = Math.cos(angle);
+    const dy = Math.sin(angle);
+    const px = -dy;
+    const py =  dx;
+
+    // Elongación y compresión (efecto de "arrastre")
+    const estirar  = 1 + elong * 0.55;   // a lo largo del movimiento
+    const comprimir = 1 - elong * 0.30;  // a lo ancho
+
+    ctx.beginPath();
+    for (let i = 0; i <= pasos; i++){
+      const t = (i / pasos) * Math.PI * 2;
+
+      // Radio base irregular (ruido suave de varios lóbulos)
+      let ruido = 1;
+      for (let k = 0; k < CFG.lobulos; k++){
+        ruido += Math.sin(t * (k + 2) + fases[k] + tf * CFG.velOndas) * amps[k] * 0.045;
+      }
+      // Respiración global
+      ruido *= 1 + Math.sin(tf * 1.3 + seed) * 0.06;
+
+      const radio = r * (1 + (ruido - 1) + CFG.deformacion * (ruido - 1));
+
+      // Coordenadas en el sistema local (antes de estirar)
+      const lx = Math.cos(t) * radio;
+      const ly = Math.sin(t) * radio;
+
+      // Proyectar sobre ejes de movimiento
+      const along = lx * dx + ly * dy;
+      const perp  = lx * px + ly * py;
+
+      // Aplicar estiramiento y compresión
+      const fx = dx * along * estirar + px * perp * comprimir;
+      const fy = dy * along * estirar + py * perp * comprimir;
+
+      const X = x + fx;
+      const Y = y + fy;
+
+      if (i === 0) ctx.moveTo(X, Y);
+      else         ctx.lineTo(X, Y);
+    }
+    ctx.closePath();
+
+    // Relleno con gradiente radial desplazado para dar volumen de sombra
+    const g = ctx.createRadialGradient(
+      x - dx * r * 0.15,
+      y - dy * r * 0.15,
+      r * 0.05,
+      x, y, r * 1.25
+    );
+    g.addColorStop(0,    rgba(color, alpha));
+    g.addColorStop(0.45, rgba(color, alpha * 0.72));
+    g.addColorStop(0.78, rgba(color, alpha * 0.30));
+    g.addColorStop(1,    rgba(color, 0));
+    ctx.fillStyle = g;
+    ctx.fill();
+
+    // Segundo pase suave (difumina el borde duro del polígono)
+    ctx.globalAlpha = 0.45;
+    ctx.filter = 'blur(8px)';
+    ctx.fill();
+    ctx.filter = 'none';
+    ctx.globalAlpha = 1;
+  }
+
+  function redimensionar(){
+    w = innerWidth; h = innerHeight;
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    canvas.width  = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    baseR = Math.max(170, Math.min(330, Math.min(w, h) * 0.30));
+  }
+
+  addEventListener('resize', redimensionar);
+
+  addEventListener('pointermove', e => {
+    puntero.x = e.clientX; puntero.y = e.clientY;
+  }, { passive: true });
+
+  addEventListener('pointerdown', e => {
+    puntero.x = e.clientX; puntero.y = e.clientY;
+    presionObj = 1.55;
+  });
+  addEventListener('pointerup',     () => { presionObj = 1; });
+  addEventListener('pointercancel', () => { presionObj = 1; });
+
+  addEventListener('pointerout', e => {
+    if (!e.relatedTarget){ puntero.x = w / 2; puntero.y = h / 2; }
+  });
+  addEventListener('blur', () => { puntero.x = w / 2; puntero.y = h / 2; });
+
+  function cuadro(tNow){
+    const dt = Math.min((tNow - tPrev) / 1000, 0.05);
+    tPrev = tNow;
+    const tf = tNow * 0.001;
+    frame++;
+
+    // Estela
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = `rgba(0,0,0,${FADE})`;
+    ctx.fillRect(0, 0, w, h);
+    if (frame % 10 === 0){
+      ctx.fillStyle = 'rgba(0,0,0,0.08)';
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.globalCompositeOperation = 'source-over';
+
+    // Seguimiento
+    const ax0 = azul.x, ay0 = azul.y;
+    azul.x = expo(azul.x, puntero.x, CFG.suavAzul,  dt);
+    azul.y = expo(azul.y, puntero.y, CFG.suavAzul,  dt);
+    verde.x = expo(verde.x, azul.x, CFG.suavVerde, dt);
+    verde.y = expo(verde.y, azul.y, CFG.suavVerde, dt);
+
+    vel.x = expo(vel.x, (azul.x - ax0) / Math.max(dt, 1e-4), 8, dt);
+    vel.y = expo(vel.y, (azul.y - ay0) / Math.max(dt, 1e-4), 8, dt);
+    vel.x = Math.max(-2500, Math.min(2500, vel.x));
+    vel.y = Math.max(-2500, Math.min(2500, vel.y));
+
+    const rapidez = Math.hypot(vel.x, vel.y);
+    const angle   = rapidez > 1 ? Math.atan2(vel.y, vel.x) : 0;
+    const elong   = Math.min(rapidez / 1800, 1);   // 0 = quieto, 1 = rápido
+
+    presion = expo(presion, presionObj, 8, dt);
+    const brillo = 1 + Math.min(rapidez / 2600, 0.35);
+    const respira = 1 + (reduceMov ? 0 : Math.sin(tf * 2.1) * 0.05);
+    const R = baseR * presion * respira;
+
+    // Separación entre azul y verde en función de la velocidad
+    const sepX = Math.max(-46, Math.min(46, vel.x * 0.028));
+    const sepY = Math.max(-46, Math.min(46, vel.y * 0.028));
+
+    // Sombra azul (la que sigue al cursor)
+    sombraOrganica(
+      azul.x - sepX, azul.y - sepY, R,
+      CFG.azulCursor,
+      0.020 * comp * brillo * (1 + (presion - 1) * 0.55),
+      tf, elong, angle, 0.0
+    );
+
+    // Sombra verde (persigue a la azul)
+    sombraOrganica(
+      verde.x + sepX * 1.4, verde.y + sepY * 1.4, R * 0.94,
+      CFG.verdeCursor,
+      0.016 * comp * brillo * (1 + (presion - 1) * 0.55),
+      tf, elong * 0.85, angle, 2.7
+    );
+
+    requestAnimationFrame(cuadro);
+  }
+
+  redimensionar();
+  requestAnimationFrame(cuadro);
+})();
+</script>
+</body>
+</html>
