@@ -1,0 +1,7 @@
+CREATE TABLE Products(
+    product bigint generated  allways as identity primary key,
+    name text not null,
+    description text not null,
+    price numeric(10,2),
+    crated_at timestamptz default now()
+);
