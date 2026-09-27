@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sitio Web - Navbar & Footer</title>
     <link rel="stylesheet" href="./css/styles.css">
-    <script type="module" src="js/supabase.js"></script>
+    <script type="module" src="./js/app.js"></script>
 </head>
 
 <body>
@@ -17,7 +17,8 @@
             <a href="#" class="brand-logo">MiSitio</a>
 
             <!-- Botón Hamburguesa Móvil -->
-            <button class="hamburger" id="hamburger-btn" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+            <button class="hamburger" id="hamburger-btn" type="button" aria-label="Abrir menú" aria-expanded="false"
+                aria-controls="nav-menu">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -28,7 +29,8 @@
                 <li class="nav-item"><a href="#inicio" class="nav-link active">Inicio</a></li>
                 <li class="nav-item"><a href="#servicios" class="nav-link">Servicios</a></li>
                 <li class="nav-item dropdown">
-                    <a href="#proyectos" class="nav-link dropdown-toggle" id="dropdown-toggle" aria-expanded="false" aria-controls="dropdown-menu">
+                    <a href="#proyectos" class="nav-link dropdown-toggle" id="dropdown-toggle" aria-expanded="false"
+                        aria-controls="dropdown-menu">
                         Proyectos <span class="arrow">▼</span>
                     </a>
                     <ul class="dropdown-menu" id="dropdown-menu">
@@ -66,13 +68,20 @@
                 </div>
 
                 <div class="hero-visual">
-                    <div class="mockup-card">
-                        <span class="status-dot"></span>
-                        <h3>Espacio para imagen, mockup o banner</h3>
-                        <div class="mockup-box">
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                    <!-- From Uiverse.io by Smit-Prajapati -->
+                    <div class="parent">
+                        <div class="card">
+                            <div class="content-box">
+                                <span class="card-title">3D Card</span>
+                                <p class="card-content">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                </p>
+                                <span class="see-more">See More</span>
+                            </div>
+                            <div class="date-box">
+                                <span class="month">JUNE</span>
+                                <span class="date">29</span>
+                            </div>
                         </div>
                     </div>
                 </div>
